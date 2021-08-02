@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @Entity
+@Table(name="goal")
 public class Goal {
 
     @Id
@@ -44,6 +45,10 @@ public class Goal {
     private String pictureURL;
     private Long userId;
 
+    public Goal() {
+
+    }
+
     //calculates the rate at which the user will be paying based on their chosen frequency
     //and the goalAmount
    public Double calculateContributionRate(Frequency frequency,double goalAmount){
@@ -69,8 +74,7 @@ public class Goal {
                daysPerFrequency = 60;
                break;
        }
-       Double rateOfContribution = (goalAmount-currentlySaved)/daysPerFrequency;
-       return rateOfContribution;
+       return (goalAmount-currentlySaved)/daysPerFrequency;
    }
     public String getTimeStamp() {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
@@ -80,8 +84,7 @@ public class Goal {
 
         ZonedDateTime dateTime = oldfashionedTimestamp.toInstant()
                 .atZone(ZoneId.systemDefault());
-        String desiredFormat = dateTime.format(formatter);
-        return desiredFormat;
+        return dateTime.format(formatter);
     }
 
     public Long getId() {
@@ -176,4 +179,6 @@ public class Goal {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+
 }
