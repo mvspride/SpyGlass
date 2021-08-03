@@ -49,8 +49,12 @@ public class Goal {
 
     }
 
-    //calculates the rate at which the user will be paying based on their chosen frequency
-    //and the goalAmount
+    /**
+     * calculates the rate at which the user will be paying based on their chosen frequency and the goalAmount
+     * @param frequency
+     * @param goalAmount
+     * @return rate
+     */
    public Double calculateContributionRate(Frequency frequency,double goalAmount){
        byte daysPerFrequency =0;
        switch (frequency){
@@ -76,6 +80,7 @@ public class Goal {
        }
        return (goalAmount-currentlySaved)/daysPerFrequency;
    }
+
     public String getTimeStamp() {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
                 .withLocale(Locale.US);

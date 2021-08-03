@@ -13,8 +13,10 @@ public class User {
     private String password;
 
     @OneToMany
-    @JoinColumn(name ="goals",referencedColumnName = "id")
     private List<Goal> goals;
+
+    public User() {
+    }
 
     public void addGoal(Goal goal){
         goals.add(goal);

@@ -1,9 +1,6 @@
 package com.codedifferently.groupone.SpyGlass.services;
 
-import com.codedifferently.groupone.SpyGlass.entities.Goal;
 import com.codedifferently.groupone.SpyGlass.entities.User;
-import com.codedifferently.groupone.SpyGlass.exceptions.goal.GoalNotFoundException;
-import com.codedifferently.groupone.SpyGlass.exceptions.user.UserAlreadyExistsException;
 import com.codedifferently.groupone.SpyGlass.exceptions.user.UserNotFoundException;
 import com.codedifferently.groupone.SpyGlass.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;

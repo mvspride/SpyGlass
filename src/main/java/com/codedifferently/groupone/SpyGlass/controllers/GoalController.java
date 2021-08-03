@@ -3,14 +3,11 @@ package com.codedifferently.groupone.SpyGlass.controllers;
 import com.codedifferently.groupone.SpyGlass.entities.Goal;
 import com.codedifferently.groupone.SpyGlass.services.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/goals")
@@ -25,7 +22,7 @@ public class GoalController {
     }
 
     @GetMapping("/{id}")
-    public Goal getToDoById(@PathVariable Long id) {
+    public Goal getGoalById(@PathVariable Long id) {
         return goalService.getGoalById(id);
     }
 
@@ -43,7 +40,5 @@ public class GoalController {
     public ResponseEntity deleteToDo(@PathVariable Long id) {
         return goalService.deleteGoal(id);
     }
-
-
 
 }
