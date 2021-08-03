@@ -38,7 +38,7 @@ public class UserService {
         if (!userRepo.existsById(id)) {
             throw new UserNotFoundException(id);
         }
-        return userRepo.getById(id);
+        return userRepo.findById(id).get();
     }
 
     /**
