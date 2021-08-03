@@ -38,12 +38,12 @@ public class UserService {
         if (!userRepo.existsById(id)) {
             throw new UserNotFoundException(id);
         }
-        return userRepo.getById(id);
+        return userRepo.findById(id).get();
     }
 
     
     /**
-     * creates a new user
+     * creates a new users
      * @param user
      * @throws URISyntaxException
      */
