@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity addToDo(@RequestBody User user) throws URISyntaxException {
+    public ResponseEntity addUser(@RequestBody User user) throws URISyntaxException {
         return userService.addUser(user);
     }
 
