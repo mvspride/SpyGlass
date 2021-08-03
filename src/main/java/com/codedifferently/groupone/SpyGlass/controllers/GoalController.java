@@ -1,55 +1,49 @@
 package com.codedifferently.groupone.SpyGlass.controllers;
 
 import com.codedifferently.groupone.SpyGlass.entities.Goal;
-import com.codedifferently.groupone.SpyGlass.repos.GoalRepo;
+import com.codedifferently.groupone.SpyGlass.services.GoalService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/goals")
 public class GoalController {
 
+    @Autowired
+    private GoalService goalService;
 
-    private final GoalRepo goalRepo;
-
-    public GoalController(GoalRepo goalRepo) {
-        this.goalRepo = goalRepo;
+    @GetMapping
+    public List<Goal> getGoals() {
+        return goalService.getGoals();
     }
 
-    @GetMapping("/goal")
-    Collection<Goal> getGoals() {
-        return goalRepo.findAll();
+    @GetMapping("/{id}")
+    public Goal getToDoById(@PathVariable Long id) {
+        return goalService.getGoalById(id);
     }
 
-    @GetMapping("/goal/{id}")
-    ResponseEntity<?> getGoals(@PathVariable Long id) {
-        Optional<Goal> goal = goalRepo.findById(id);
-        return goal.map(response -> ResponseEntity.ok().body(response))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @PostMapping
+    public ResponseEntity addToDo(@RequestBody Goal goal) throws URISyntaxException {
+        return goalService.addGoal(goal);
     }
 
-    @PostMapping("/goal")
-    ResponseEntity<Goal> addGoals(@RequestBody Goal goal) throws URISyntaxException {
-        Goal savedGoal = goalRepo.save(goal);
-        return ResponseEntity.created(new URI("/api/goal"+ savedGoal.getId())).body(savedGoal);
+    @PutMapping("/{id}")
+    public ResponseEntity editToDo(@PathVariable Long id, @RequestBody Goal goal) {
+        return goalService.editGoal(id, goal);
     }
 
-    @PutMapping("/goal/{id}")
-    ResponseEntity<Goal> updateGoal(@RequestBody Goal goal) {
-        Goal currentGoal = goalRepo.save(goal);
-        return ResponseEntity.ok().body(currentGoal);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteToDo(@PathVariable Long id) {
+        return goalService.deleteGoal(id);
+    }
 
-    }
-    @DeleteMapping("/goal/{id}")
-    public ResponseEntity<?> deleteGoal(@PathVariable Long id) {
-        goalRepo.deleteById(id);
-        return ResponseEntity.ok().build();
-    }
+
 
 }
