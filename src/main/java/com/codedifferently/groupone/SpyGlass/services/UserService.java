@@ -3,6 +3,7 @@ package com.codedifferently.groupone.SpyGlass.services;
 
 import com.codedifferently.groupone.SpyGlass.email.EmailSender;
 import com.codedifferently.groupone.SpyGlass.entities.User;
+import com.codedifferently.groupone.SpyGlass.exceptions.user.UserNotFoundException;
 import com.codedifferently.groupone.SpyGlass.registration.token.ConfirmationToken;
 import com.codedifferently.groupone.SpyGlass.registration.token.ConfirmationTokenService;
 import com.codedifferently.groupone.SpyGlass.repos.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -67,6 +69,18 @@ public class UserService implements UserDetailsService {
         confirmationTokenService.saveConfirmationToken(confirmationToken);
         return token;
     }
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    public User getUserById(Long id) throws UserNotFoundException {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException(id);
+        }
+        return userRepository.findById(id).get();
+    }
+
 
     public int enableUser(String email){
         return userRepository.enableUser(email);

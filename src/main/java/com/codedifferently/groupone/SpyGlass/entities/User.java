@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 public class User implements UserDetails {
@@ -22,6 +23,17 @@ public class User implements UserDetails {
     private UserRole userRole;
     private Boolean locked = false;
     private Boolean enabled = false;
+    @OneToMany
+    private List<Goal> goals;
+
+    public void addGoal(Goal goal){
+        goals.add(goal);
+    }
+
+    public void deleteGoal(Goal goal){
+        goals.remove(goal);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
