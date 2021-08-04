@@ -1,10 +1,9 @@
 import './App.css';
-import HomePage from './Component/HomePage/HomePage';
-
+import NavBars from'./component/Navbars/Navbar';
 function App() {
   return (
     <div className="App">
-      <HomePage/>
+      <NavBars/>
     </div>
   );
 }
