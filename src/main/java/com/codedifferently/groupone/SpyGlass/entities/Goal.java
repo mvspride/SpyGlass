@@ -2,6 +2,7 @@ package com.codedifferently.groupone.SpyGlass.entities;
 
 import com.codedifferently.groupone.SpyGlass.enums.Frequency;
 import com.codedifferently.groupone.SpyGlass.enums.Priority;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,7 +40,9 @@ public class Goal {
     private double goalAmount;
     private double currentlySaved;
     private String pictureURL;
-    private Long userId;
+    @JsonIgnore
+    @ManyToOne
+    private User user;
 
     public Goal() {
 
@@ -174,13 +177,11 @@ public class Goal {
         this.pictureURL = pictureURL;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
-
-
 }
