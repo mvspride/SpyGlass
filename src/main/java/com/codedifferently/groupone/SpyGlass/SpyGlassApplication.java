@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpyGlassApplication {
 
 	public static void main(String[] args) {
-		System.out.println("hellp");
 		SpringApplication.run(SpyGlassApplication.class, args);
 	}
 
