@@ -38,8 +38,9 @@ public class UserService {
         return userRepo.findById(id).get();
     }
 
+    
     /**
-     * creates a new user
+     * creates a new users
      * @param user
      * @throws URISyntaxException
      */
