@@ -16,29 +16,32 @@ public class GoalController {
     @Autowired
     private GoalService goalService;
 
+    //GET ALL GOALS
     @GetMapping
     public List<Goal> getGoals() {
         return goalService.getGoals();
     }
 
+    //GET GOAL BY ID
     @GetMapping("/{id}")
     public Goal getGoalById(@PathVariable Long id) {
         return goalService.getGoalById(id);
     }
 
-    @PostMapping
-    public ResponseEntity addToDo(@RequestBody Goal goal) throws URISyntaxException {
-        return goalService.addGoal(goal);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity editToDo(@PathVariable Long id, @RequestBody Goal goal) {
-        return goalService.editGoal(id, goal);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteToDo(@PathVariable Long id) {
-        return goalService.deleteGoal(id);
-    }
+    //EVERY GOAL HAS TO BE MAPPED TO A USER!
+//    @PostMapping
+//    public ResponseEntity addToDo(@RequestBody Goal goal) throws URISyntaxException {
+//        return goalService.addGoal(goal);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity editToDo(@PathVariable Long id, @RequestBody Goal goal) {
+//        return goalService.editGoal(id, goal);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity deleteToDo(@PathVariable Long id) {
+//        return goalService.deleteGoal(id);
+//    }
 
 }

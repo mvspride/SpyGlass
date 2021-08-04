@@ -23,16 +23,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //GET ALL USERS
     @GetMapping
     public List<User> getUsers() {
         return userService.getAllUsers();
     }
 
+    //GET USER BY ID
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
+    //ADD USER
     @PostMapping
     public ResponseEntity addUser(@RequestBody User user) throws URISyntaxException {
         return userService.addUser(user);

@@ -1,6 +1,7 @@
 package com.codedifferently.groupone.SpyGlass.services;
 
 import com.codedifferently.groupone.SpyGlass.entities.Goal;
+import com.codedifferently.groupone.SpyGlass.enums.Priority;
 import com.codedifferently.groupone.SpyGlass.exceptions.goal.GoalNotFoundException;
 import com.codedifferently.groupone.SpyGlass.repos.GoalRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,22 +51,17 @@ public class GoalService {
 
     /**
      * edits goal
-     * @param id
+     * @param goalId
      * @param goal
      * @throws GoalNotFoundException
      */
-    public ResponseEntity editGoal(@PathVariable Long id, @RequestBody Goal goal) throws GoalNotFoundException {
-        if (!goalRepo.existsById(id)) {
-            throw new GoalNotFoundException(id);
-        }
-        Goal editingGoal = goalRepo.findById(id).orElseThrow(RuntimeException::new);
-        editingGoal.setGoalAmount(goal.getGoalAmount());
-        editingGoal.setContributionAmount(goal.getContributionAmount());
-        editingGoal.setDescription(goal.getDescription());
-        editingGoal.setContributionFrequency(goal.getContributionFrequency());
-        editingGoal.setPriority(goal.getPriority());
-        editingGoal = goalRepo.save(goal);
-        return ResponseEntity.ok(editingGoal);
+    public ResponseEntity editGoal(Long goalId,Goal goal) throws GoalNotFoundException {
+        Goal currentGoal = goalRepo.findById(goalId).orElseThrow(()->new GoalNotFoundException(goalId));
+//       goalRepo.updateGoal(goal.getDescription(),goal.getDeadLine(),goal.getFrequency(),
+//               goal.getPriority(),goal.getContributionAmount(),
+//        goal.getGoalAmount(),goal.getCurrentlySaved(), goal.getPictureURL());
+        goalRepo.save(goal);
+        return ResponseEntity.ok(currentGoal);
     }
 
     /**

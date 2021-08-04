@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,9 +33,6 @@ public class Goal {
     private Frequency frequency;
 
     @Autowired
-    private Frequency contributionFrequency;
-
-    @Autowired
     private Priority priority;
 
     private double contributionAmount;
@@ -55,7 +51,7 @@ public class Goal {
      * @param goalAmount
      * @return rate
      */
-   public Double calculateContributionRate(Frequency frequency,double goalAmount){
+   public Double calculateContributionAmount(Frequency frequency,double goalAmount){
        byte daysPerFrequency =0;
        switch (frequency){
            case DAILY:
@@ -108,6 +104,28 @@ public class Goal {
         this.description = description;
     }
 
+    public void setContributionAmount(double contributionAmount) {
+        this.contributionAmount = contributionAmount;
+    }
+    public double getContributionAmount() {
+        return contributionAmount;
+    }
+    public double getGoalAmount() {
+        return goalAmount;
+    }
+
+    public void setGoalAmount(double goalAmount) {
+        this.goalAmount = goalAmount;
+    }
+
+    public double getCurrentlySaved() {
+        return currentlySaved;
+    }
+
+    public void setCurrentlySaved(double currentlySaved) {
+        this.currentlySaved = currentlySaved;
+    }
+
     public Date getDeadLine() {
         return deadLine;
     }
@@ -128,24 +146,12 @@ public class Goal {
         this.frequency = frequency;
     }
 
-    public Frequency getContributionFrequency() {
-        return contributionFrequency;
-    }
-
-    public void setContributionFrequency(Frequency contributionFrequency) {
-        this.contributionFrequency = contributionFrequency;
-    }
-
     public Priority getPriority() {
         return priority;
     }
 
     public void setPriority(Priority priority) {
         this.priority = priority;
-    }
-
-    public Double getContributionAmount() {
-        return contributionAmount;
     }
 
     public void setContributionAmount(Double contributionAmount) {
@@ -158,15 +164,6 @@ public class Goal {
 
     public void reduceContributionAmount(Double contributionAmount){
         this.contributionAmount -= contributionAmount;
-    }
-
-    public Double getGoalAmount() {
-        return goalAmount;
-    }
-
-
-    public void setGoalAmount(Double goalAmount) {
-        this.goalAmount = goalAmount;
     }
 
     public String getPictureURL() {
