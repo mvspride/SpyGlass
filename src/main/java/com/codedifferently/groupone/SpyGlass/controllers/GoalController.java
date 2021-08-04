@@ -1,5 +1,4 @@
 package com.codedifferently.groupone.SpyGlass.controllers;
-
 import com.codedifferently.groupone.SpyGlass.entities.Goal;
 import com.codedifferently.groupone.SpyGlass.services.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
