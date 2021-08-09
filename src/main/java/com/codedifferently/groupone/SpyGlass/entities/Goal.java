@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Entity
@@ -43,6 +44,9 @@ public class Goal {
     @JsonIgnore
     @ManyToOne
     private User user;
+
+    @OneToMany
+    private List<Contribution> contributions;
 
     public Goal() {
 
@@ -89,6 +93,10 @@ public class Goal {
         ZonedDateTime dateTime = oldfashionedTimestamp.toInstant()
                 .atZone(ZoneId.systemDefault());
         return dateTime.format(formatter);
+    }
+
+    public void addContribution(Contribution contribution){
+       contributions.add(contribution);
     }
 
     public Long getId() {
@@ -183,5 +191,13 @@ public class Goal {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Contribution> getContributions() {
+        return contributions;
+    }
+
+    public void setContributions(List<Contribution> contributions) {
+        this.contributions = contributions;
     }
 }

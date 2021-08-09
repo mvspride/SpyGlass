@@ -1,4 +1,5 @@
 package com.codedifferently.groupone.SpyGlass.controllers;
+import com.codedifferently.groupone.SpyGlass.entities.Contribution;
 import com.codedifferently.groupone.SpyGlass.entities.Goal;
 import com.codedifferently.groupone.SpyGlass.services.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,11 @@ public class GoalController {
     @DeleteMapping("/{id}")
     public ResponseEntity deleteToDo(@PathVariable Long id) {
         return goalService.deleteGoal(id);
+    }
+
+    @PostMapping("/contribute/{id}")
+    public ResponseEntity addContribution(@PathVariable Long id, @RequestBody Contribution contribution){
+        return goalService.addContribution(id, contribution);
     }
 
 }
