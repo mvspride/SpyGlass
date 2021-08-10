@@ -1,6 +1,9 @@
 package com.codedifferently.groupone.SpyGlass.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Contribution {
     @Id
@@ -19,37 +25,4 @@ public class Contribution {
     @ManyToOne
     private Goal goal;
 
-    public Date getContributionDate() {
-        return contributionDate;
-    }
-
-    public void setContributionDate(Date contributionDate) {
-        this.contributionDate = contributionDate;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public Goal getGoal() {
-        return goal;
-    }
-
-    public void setGoal(Goal goal) {
-        this.goal = goal;
-    }
-
-    @Override
-    public String toString() {
-        return "Contribution{" +
-                "id=" + id +
-                ", contributionDate=" + contributionDate +
-                ", amount=" + amount +
-                ", goal=" + goal +
-                '}';
-    }
 }
