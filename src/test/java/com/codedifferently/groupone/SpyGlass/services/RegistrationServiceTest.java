@@ -17,9 +17,9 @@ import com.codedifferently.groupone.SpyGlass.registration.token.ConfirmationToke
 import com.codedifferently.groupone.SpyGlass.registration.token.ConfirmationTokenService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class RegistrationServiceTest {
 
     @Test
     public void testRegister() {
-        when(this.userService.signUpUser((com.codedifferently.groupone.SpyGlass.entities.User) any())).thenReturn("foo");
+        when(this.userService.signUpUser(any())).thenReturn("foo");
         when(this.emailValidator.test(anyString())).thenReturn(true);
         doNothing().when(this.emailSender).send(anyString(), anyString());
 
@@ -58,14 +58,14 @@ public class RegistrationServiceTest {
         registrationRequest.setEmail("jane.doe@example.org");
         registrationRequest.setUsername("janedoe");
         assertEquals("foo", this.registrationService.register(registrationRequest));
-        verify(this.userService).signUpUser((com.codedifferently.groupone.SpyGlass.entities.User) any());
+        verify(this.userService).signUpUser(any());
         verify(this.emailValidator).test(anyString());
         verify(this.emailSender).send(anyString(), anyString());
     }
 
     @Test
     public void testRegister2() {
-        when(this.userService.signUpUser((com.codedifferently.groupone.SpyGlass.entities.User) any())).thenReturn("foo");
+        when(this.userService.signUpUser(any())).thenReturn("foo");
         when(this.emailValidator.test(anyString())).thenReturn(false);
         doNothing().when(this.emailSender).send(anyString(), anyString());
 
@@ -83,10 +83,8 @@ public class RegistrationServiceTest {
         user.setEmail("jane.doe@example.org");
         user.setPassword("iloveyou");
         user.setUsername("janedoe");
-        user.setId(123L);
         user.setEnabled(true);
         user.setLocked(true);
-        user.setGoals(new ArrayList<Goal>());
         user.setUserRole(UserRole.USER);
 
         ConfirmationToken confirmationToken = new ConfirmationToken();
@@ -95,7 +93,7 @@ public class RegistrationServiceTest {
         confirmationToken.setConfirmationTime(LocalDateTime.of(1, 1, 1, 1, 1));
         confirmationToken.setExpirationTime(LocalDateTime.of(1, 1, 1, 1, 1));
         confirmationToken.setCreationTime(LocalDateTime.of(1, 1, 1, 1, 1));
-        Optional<ConfirmationToken> ofResult = Optional.<ConfirmationToken>of(confirmationToken);
+        Optional<ConfirmationToken> ofResult = Optional.of(confirmationToken);
         when(this.confirmationTokenService.getToken(anyString())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class, () -> this.registrationService.confirmToken("ABC123"));
         verify(this.confirmationTokenService).getToken(anyString());
@@ -107,10 +105,8 @@ public class RegistrationServiceTest {
         user.setEmail("jane.doe@example.org");
         user.setPassword("iloveyou");
         user.setUsername("janedoe");
-        user.setId(123L);
         user.setEnabled(true);
         user.setLocked(true);
-        user.setGoals(new ArrayList<Goal>());
         user.setUserRole(UserRole.USER);
 
         ConfirmationToken confirmationToken = new ConfirmationToken();
@@ -119,7 +115,7 @@ public class RegistrationServiceTest {
         confirmationToken.setConfirmationTime(null);
         confirmationToken.setExpirationTime(LocalDateTime.of(1, 1, 1, 1, 1));
         confirmationToken.setCreationTime(LocalDateTime.of(1, 1, 1, 1, 1));
-        Optional<ConfirmationToken> ofResult = Optional.<ConfirmationToken>of(confirmationToken);
+        Optional<ConfirmationToken> ofResult = Optional.of(confirmationToken);
         when(this.confirmationTokenService.getToken(anyString())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class, () -> this.registrationService.confirmToken("ABC123"));
         verify(this.confirmationTokenService).getToken(anyString());
@@ -127,7 +123,7 @@ public class RegistrationServiceTest {
 
     @Test
     public void testConfirmToken3() {
-        when(this.confirmationTokenService.getToken(anyString())).thenReturn(Optional.<ConfirmationToken>empty());
+        when(this.confirmationTokenService.getToken(anyString())).thenReturn(Optional.empty());
         assertThrows(IllegalStateException.class, () -> this.registrationService.confirmToken("ABC123"));
         verify(this.confirmationTokenService).getToken(anyString());
     }

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.codedifferently.groupone.SpyGlass.entities.Contribution;
 import com.codedifferently.groupone.SpyGlass.entities.Goal;
 import com.codedifferently.groupone.SpyGlass.entities.User;
 import com.codedifferently.groupone.SpyGlass.enums.Frequency;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,43 +45,44 @@ public class UserGoalServiceTest {
     @MockBean
     private UserRepo userRepo;
 
-    @Test
-    public void testAddGoalToUser() {
-        User user = new User();
+    private User user;
+    private User user1;
+    private User user2;
+    private Goal goal;
+    private Goal goal1;
+
+    @BeforeEach
+    void setUp() {
+        user = new User();
         user.setEmail("jane.doe@example.org");
         user.setPassword("iloveyou");
         user.setUsername("janedoe");
-        user.setId(123L);
         user.setEnabled(true);
         user.setLocked(true);
-        user.setGoals(new ArrayList<Goal>());
         user.setUserRole(UserRole.USER);
-        Optional<User> ofResult = Optional.<User>of(user);
-
-        User user1 = new User();
+        user1 = new User();
         user1.setEmail("jane.doe@example.org");
         user1.setPassword("iloveyou");
         user1.setUsername("janedoe");
-        user1.setId(123L);
         user1.setEnabled(true);
         user1.setLocked(true);
-        user1.setGoals(new ArrayList<Goal>());
         user1.setUserRole(UserRole.USER);
-        when(this.userRepo.save((User) any())).thenReturn(user1);
-        when(this.userRepo.findById((Long) any())).thenReturn(ofResult);
-
-        User user2 = new User();
+        user2 = new User();
         user2.setEmail("jane.doe@example.org");
         user2.setPassword("iloveyou");
         user2.setUsername("janedoe");
-        user2.setId(123L);
         user2.setEnabled(true);
         user2.setLocked(true);
-        user2.setGoals(new ArrayList<Goal>());
         user2.setUserRole(UserRole.USER);
-
-        Goal goal = new Goal();
-        goal.setContributions(new ArrayList<Contribution>());
+        User user3 = new User();
+        user3.setEmail("jane.doe@example.org");
+        user3.setPassword("iloveyou");
+        user3.setUsername("janedoe");
+        user3.setEnabled(true);
+        user3.setLocked(true);
+        user3.setUserRole(UserRole.USER);
+        goal = new Goal();
+        goal.setContributions(new ArrayList<>());
         goal.setUser(user2);
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         goal.setDeadLine(Date.from(atStartOfDayResult.atZone(ZoneId.systemDefault()).toInstant()));
@@ -94,20 +95,8 @@ public class UserGoalServiceTest {
         goal.setGoalAmount(10.0);
         goal.setContributionAmount(10.0);
         goal.setPriority(Priority.LOW);
-        Optional<Goal> ofResult1 = Optional.<Goal>of(goal);
-
-        User user3 = new User();
-        user3.setEmail("jane.doe@example.org");
-        user3.setPassword("iloveyou");
-        user3.setUsername("janedoe");
-        user3.setId(123L);
-        user3.setEnabled(true);
-        user3.setLocked(true);
-        user3.setGoals(new ArrayList<Goal>());
-        user3.setUserRole(UserRole.USER);
-
-        Goal goal1 = new Goal();
-        goal1.setContributions(new ArrayList<Contribution>());
+        goal1 = new Goal();
+        goal1.setContributions(new ArrayList<>());
         goal1.setUser(user3);
         LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
         goal1.setDeadLine(Date.from(atStartOfDayResult1.atZone(ZoneId.systemDefault()).toInstant()));
@@ -120,276 +109,91 @@ public class UserGoalServiceTest {
         goal1.setGoalAmount(10.0);
         goal1.setContributionAmount(10.0);
         goal1.setPriority(Priority.LOW);
-        when(this.goalRepo.save((Goal) any())).thenReturn(goal1);
-        when(this.goalRepo.findById((Long) any())).thenReturn(ofResult1);
+
+    }
+
+    @Test
+    public void testAddGoalToUser() {
+        Optional<User> ofResult = Optional.of(user);
+
+        when(this.userRepo.save(any())).thenReturn(user1);
+        when(this.userRepo.findById(any())).thenReturn(ofResult);
+
+        Optional<Goal> ofResult1 = Optional.of(goal);
+
+        when(this.goalRepo.save(any())).thenReturn(goal1);
+        when(this.goalRepo.findById(any())).thenReturn(ofResult1);
         this.userGoalService.addGoalToUser(123L, 123L);
-        verify(this.userRepo).findById((Long) any());
-        verify(this.userRepo).save((User) any());
-        verify(this.goalRepo).findById((Long) any());
-        verify(this.goalRepo).save((Goal) any());
+        verify(this.userRepo).findById(any());
+        verify(this.userRepo).save(any());
+        verify(this.goalRepo).findById(any());
+        verify(this.goalRepo).save(any());
     }
 
     @Test
     public void testAddGoalToUser2() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setId(123L);
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setGoals(new ArrayList<Goal>());
-        user.setUserRole(UserRole.USER);
-        when(this.userRepo.save((User) any())).thenReturn(user);
-        when(this.userRepo.findById((Long) any())).thenReturn(Optional.<User>empty());
+        when(this.userRepo.save(any())).thenReturn(user);
+        when(this.userRepo.findById(any())).thenReturn(Optional.empty());
 
-        User user1 = new User();
-        user1.setEmail("jane.doe@example.org");
-        user1.setPassword("iloveyou");
-        user1.setUsername("janedoe");
-        user1.setId(123L);
-        user1.setEnabled(true);
-        user1.setLocked(true);
-        user1.setGoals(new ArrayList<Goal>());
-        user1.setUserRole(UserRole.USER);
+        Optional<Goal> ofResult = Optional.of(goal);
 
-        Goal goal = new Goal();
-        goal.setContributions(new ArrayList<Contribution>());
-        goal.setUser(user1);
-        LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
-        goal.setDeadLine(Date.from(atStartOfDayResult.atZone(ZoneId.systemDefault()).toInstant()));
-        goal.setCurrentlySaved(10.0);
-        goal.setFrequency(Frequency.DAILY);
-        goal.setId(123L);
-        goal.setTimeStamp(mock(Timestamp.class));
-        goal.setPictureURL("https://example.org/example");
-        goal.setDescription("The characteristics of someone or something");
-        goal.setGoalAmount(10.0);
-        goal.setContributionAmount(10.0);
-        goal.setPriority(Priority.LOW);
-        Optional<Goal> ofResult = Optional.<Goal>of(goal);
-
-        User user2 = new User();
-        user2.setEmail("jane.doe@example.org");
-        user2.setPassword("iloveyou");
-        user2.setUsername("janedoe");
-        user2.setId(123L);
-        user2.setEnabled(true);
-        user2.setLocked(true);
-        user2.setGoals(new ArrayList<Goal>());
-        user2.setUserRole(UserRole.USER);
-
-        Goal goal1 = new Goal();
-        goal1.setContributions(new ArrayList<Contribution>());
-        goal1.setUser(user2);
-        LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
-        goal1.setDeadLine(Date.from(atStartOfDayResult1.atZone(ZoneId.systemDefault()).toInstant()));
-        goal1.setCurrentlySaved(10.0);
-        goal1.setFrequency(Frequency.DAILY);
-        goal1.setId(123L);
-        goal1.setTimeStamp(mock(Timestamp.class));
-        goal1.setPictureURL("https://example.org/example");
-        goal1.setDescription("The characteristics of someone or something");
-        goal1.setGoalAmount(10.0);
-        goal1.setContributionAmount(10.0);
-        goal1.setPriority(Priority.LOW);
-        when(this.goalRepo.save((Goal) any())).thenReturn(goal1);
-        when(this.goalRepo.findById((Long) any())).thenReturn(ofResult);
+        when(this.goalRepo.save(any())).thenReturn(goal1);
+        when(this.goalRepo.findById(any())).thenReturn(ofResult);
         assertThrows(UserNotFoundException.class, () -> this.userGoalService.addGoalToUser(123L, 123L));
-        verify(this.userRepo).findById((Long) any());
-        verify(this.goalRepo).findById((Long) any());
+        verify(this.userRepo).findById(any());
+        verify(this.goalRepo).findById(any());
     }
 
     @Test
     public void testDeleteGoalFromUser() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setId(123L);
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setGoals(new ArrayList<Goal>());
-        user.setUserRole(UserRole.USER);
-        Optional<User> ofResult = Optional.<User>of(user);
+        Optional<User> ofResult = Optional.of(user);
 
-        User user1 = new User();
-        user1.setEmail("jane.doe@example.org");
-        user1.setPassword("iloveyou");
-        user1.setUsername("janedoe");
-        user1.setId(123L);
-        user1.setEnabled(true);
-        user1.setLocked(true);
-        user1.setGoals(new ArrayList<Goal>());
-        user1.setUserRole(UserRole.USER);
-        when(this.userRepo.save((User) any())).thenReturn(user1);
-        when(this.userRepo.findById((Long) any())).thenReturn(ofResult);
+        when(this.userRepo.save(any())).thenReturn(user1);
+        when(this.userRepo.findById(any())).thenReturn(ofResult);
 
-        User user2 = new User();
-        user2.setEmail("jane.doe@example.org");
-        user2.setPassword("iloveyou");
-        user2.setUsername("janedoe");
-        user2.setId(123L);
-        user2.setEnabled(true);
-        user2.setLocked(true);
-        user2.setGoals(new ArrayList<Goal>());
-        user2.setUserRole(UserRole.USER);
-
-        Goal goal = new Goal();
-        goal.setContributions(new ArrayList<Contribution>());
-        goal.setUser(user2);
-        LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
-        goal.setDeadLine(Date.from(atStartOfDayResult.atZone(ZoneId.systemDefault()).toInstant()));
-        goal.setCurrentlySaved(10.0);
-        goal.setFrequency(Frequency.DAILY);
-        goal.setId(123L);
-        goal.setTimeStamp(mock(Timestamp.class));
-        goal.setPictureURL("https://example.org/example");
-        goal.setDescription("The characteristics of someone or something");
-        goal.setGoalAmount(10.0);
-        goal.setContributionAmount(10.0);
-        goal.setPriority(Priority.LOW);
-        Optional<Goal> ofResult1 = Optional.<Goal>of(goal);
-        doNothing().when(this.goalRepo).delete((Goal) any());
-        when(this.goalRepo.findById((Long) any())).thenReturn(ofResult1);
+        Optional<Goal> ofResult1 = Optional.of(goal);
+        doNothing().when(this.goalRepo).delete(any());
+        when(this.goalRepo.findById(any())).thenReturn(ofResult1);
         this.userGoalService.deleteGoalFromUser(123L, 123L);
-        verify(this.userRepo).findById((Long) any());
-        verify(this.userRepo).save((User) any());
-        verify(this.goalRepo).delete((Goal) any());
-        verify(this.goalRepo).findById((Long) any());
+        verify(this.userRepo).findById(any());
+        verify(this.userRepo).save(any());
+        verify(this.goalRepo).delete(any());
+        verify(this.goalRepo).findById(any());
     }
 
     @Test
     public void testDeleteGoalFromUser2() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setId(123L);
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setGoals(new ArrayList<Goal>());
-        user.setUserRole(UserRole.USER);
-        when(this.userRepo.save((User) any())).thenReturn(user);
-        when(this.userRepo.findById((Long) any())).thenReturn(Optional.<User>empty());
+        when(this.userRepo.save(any())).thenReturn(user);
+        when(this.userRepo.findById(any())).thenReturn(Optional.empty());
 
-        User user1 = new User();
-        user1.setEmail("jane.doe@example.org");
-        user1.setPassword("iloveyou");
-        user1.setUsername("janedoe");
-        user1.setId(123L);
-        user1.setEnabled(true);
-        user1.setLocked(true);
-        user1.setGoals(new ArrayList<Goal>());
-        user1.setUserRole(UserRole.USER);
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toInstant()).thenReturn(null);
 
-        Goal goal = new Goal();
-        goal.setContributions(new ArrayList<Contribution>());
-        goal.setUser(user1);
-        LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
-        goal.setDeadLine(Date.from(atStartOfDayResult.atZone(ZoneId.systemDefault()).toInstant()));
-        goal.setCurrentlySaved(10.0);
-        goal.setFrequency(Frequency.DAILY);
-        goal.setId(123L);
-        goal.setTimeStamp(timestamp);
-        goal.setPictureURL("https://example.org/example");
-        goal.setDescription("The characteristics of someone or something");
-        goal.setGoalAmount(10.0);
-        goal.setContributionAmount(10.0);
-        goal.setPriority(Priority.LOW);
-        Optional<Goal> ofResult = Optional.<Goal>of(goal);
-        doNothing().when(this.goalRepo).delete((Goal) any());
-        when(this.goalRepo.findById((Long) any())).thenReturn(ofResult);
+        Optional<Goal> ofResult = Optional.of(goal);
+        doNothing().when(this.goalRepo).delete(any());
+        when(this.goalRepo.findById(any())).thenReturn(ofResult);
         assertThrows(UserNotFoundException.class, () -> this.userGoalService.deleteGoalFromUser(123L, 123L));
-        verify(this.userRepo).findById((Long) any());
-        verify(this.goalRepo).findById((Long) any());
+        verify(this.userRepo).findById(any());
+        verify(this.goalRepo).findById(any());
     }
 
     @Test
     public void testDeleteGoalFromUser3() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setId(123L);
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setGoals(new ArrayList<Goal>());
-        user.setUserRole(UserRole.USER);
-
-        Goal goal = new Goal();
-        goal.setContributions(new ArrayList<Contribution>());
-        goal.setUser(user);
-        LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
-        goal.setDeadLine(Date.from(atStartOfDayResult.atZone(ZoneId.systemDefault()).toInstant()));
-        goal.setCurrentlySaved(10.0);
-        goal.setFrequency(Frequency.DAILY);
-        goal.setId(123L);
-        goal.setTimeStamp(mock(Timestamp.class));
-        goal.setPictureURL("https://example.org/example");
-        goal.setDescription("The characteristics of someone or something");
-        goal.setGoalAmount(10.0);
-        goal.setContributionAmount(10.0);
-        goal.setPriority(Priority.LOW);
-
-        ArrayList<Goal> goalList = new ArrayList<Goal>();
+        ArrayList<Goal> goalList = new ArrayList<>();
         goalList.add(goal);
 
-        User user1 = new User();
-        user1.setEmail("jane.doe@example.org");
-        user1.setPassword("iloveyou");
-        user1.setUsername("janedoe");
-        user1.setId(123L);
-        user1.setEnabled(true);
-        user1.setLocked(true);
-        user1.setGoals(goalList);
-        user1.setUserRole(UserRole.USER);
-        Optional<User> ofResult = Optional.<User>of(user1);
+        Optional<User> ofResult = Optional.of(user1);
 
-        User user2 = new User();
-        user2.setEmail("jane.doe@example.org");
-        user2.setPassword("iloveyou");
-        user2.setUsername("janedoe");
-        user2.setId(123L);
-        user2.setEnabled(true);
-        user2.setLocked(true);
-        user2.setGoals(new ArrayList<Goal>());
-        user2.setUserRole(UserRole.USER);
-        when(this.userRepo.save((User) any())).thenReturn(user2);
-        when(this.userRepo.findById((Long) any())).thenReturn(ofResult);
-        doNothing().when(this.goalRepo).delete((Goal) any());
-        when(this.goalRepo.findById((Long) any())).thenReturn(Optional.<Goal>empty());
+        when(this.userRepo.save(any())).thenReturn(user2);
+        when(this.userRepo.findById(any())).thenReturn(ofResult);
+        doNothing().when(this.goalRepo).delete(any());
+        when(this.goalRepo.findById(any())).thenReturn(Optional.empty());
 
-        User user3 = new User();
-        user3.setEmail("jane.doe@example.org");
-        user3.setPassword("iloveyou");
-        user3.setUsername("janedoe");
-        user3.setId(123L);
-        user3.setEnabled(true);
-        user3.setLocked(true);
-        user3.setGoals(new ArrayList<Goal>());
-        user3.setUserRole(UserRole.USER);
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toInstant()).thenReturn(null);
 
-        Goal goal1 = new Goal();
-        goal1.setContributions(new ArrayList<Contribution>());
-        goal1.setUser(user3);
-        LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
-        goal1.setDeadLine(Date.from(atStartOfDayResult1.atZone(ZoneId.systemDefault()).toInstant()));
-        goal1.setCurrentlySaved(10.0);
-        goal1.setFrequency(Frequency.DAILY);
-        goal1.setId(123L);
-        goal1.setTimeStamp(timestamp);
-        goal1.setPictureURL("https://example.org/example");
-        goal1.setDescription("The characteristics of someone or something");
-        goal1.setGoalAmount(10.0);
-        goal1.setContributionAmount(10.0);
-        goal1.setPriority(Priority.LOW);
         assertThrows(GoalNotFoundException.class, () -> this.userGoalService.deleteGoalFromUser(123L, 123L));
-        verify(this.goalRepo).findById((Long) any());
+        verify(this.goalRepo).findById(any());
     }
 }
 

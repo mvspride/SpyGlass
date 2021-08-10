@@ -1,12 +1,10 @@
 package com.codedifferently.groupone.SpyGlass.controllers;
 
 import com.codedifferently.groupone.SpyGlass.registration.RegistrationRequest;
-import com.codedifferently.groupone.SpyGlass.services.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,9 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 public class RegistrationControllerTest {
     @Autowired
     private RegistrationController registrationController;
-
-    @MockBean
-    private RegistrationService registrationService;
 
     @Test
     public void testConfirm() throws Exception {
