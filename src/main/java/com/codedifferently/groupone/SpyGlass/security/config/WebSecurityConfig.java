@@ -26,11 +26,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/registration/**")
+                    .antMatchers("/registration/**", "/login/*")
                     .permitAll()
                 .anyRequest()
                 .authenticated().and()
-                .formLogin();
+                .formLogin().defaultSuccessUrl("http://localhost:3000/admin/dashboard", true);
     }
 
     @Override

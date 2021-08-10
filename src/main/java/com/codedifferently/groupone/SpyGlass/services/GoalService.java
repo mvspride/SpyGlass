@@ -50,6 +50,12 @@ public class GoalService {
         return goalRepo.findById(id);
     }
 
+    public List<Goal> getGoalsByUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User)auth.getPrincipal();
+        return goalRepo.findAllByUser(currentUser);
+    }
+
     /**
      * creates new goal
      * @param goal

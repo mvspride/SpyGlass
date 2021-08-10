@@ -41,7 +41,7 @@ public class RegistrationService {
         String token = userService.signUpUser(newUser);
         String link = "http://localhost:8080/registration/confirm?token=" + token;
         emailSender.send(request.getEmail(), "Please confirm your email for SpyGlass by clicking the following link: \n " + link);
-        return token;
+        return "We've sent you an email with a confirmation link. Please click that link to confirm your email";
     }
 
     @Transactional
@@ -59,6 +59,6 @@ public class RegistrationService {
         confirmationTokenService.setConfirmationTime(token);
         userService.enableUser(confirmationToken.getUser().getEmail());
 
-        return "confirmed";
+        return "Email confirmed! log in here: http://localhost:8080/login";
     }
 }

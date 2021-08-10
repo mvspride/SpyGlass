@@ -5,7 +5,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
-import goalImage from "/Users/studenteng01/Documents/codeDIFF/Project/SpyGlass(vanGuard)/frontend/src/assets/img/cover.jpeg";
+import propTypes from 'prop-types';
+//import goalImage from "./download.jpg";
 import './Goal.css';
 
 class Goal extends Component{
@@ -70,5 +71,16 @@ class Goal extends Component{
       );
     }
   }
+
+  Goal.propTypes = {
+    goalName: propTypes.string,
+    goalAmount: propTypes.string,
+    goalImage: propTypes.string,
+    priority: propTypes.string,
+    frequency: propTypes.string,
+    deadLine: propTypes.string,
+    contributionAmount: propTypes.string,
+    description: propTypes.string
+  };
 
 export default Goal;

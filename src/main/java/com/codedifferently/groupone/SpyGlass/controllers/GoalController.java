@@ -19,7 +19,7 @@ public class GoalController {
     //GET ALL GOALS
     @GetMapping
     public List<Goal> getGoals() {
-        return goalService.getGoals();
+        return goalService.getGoalsByUser();
     }
 
     //GET GOAL BY ID

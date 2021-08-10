@@ -1,6 +1,7 @@
 package com.codedifferently.groupone.SpyGlass.repos;
 
 import com.codedifferently.groupone.SpyGlass.entities.Goal;
+import com.codedifferently.groupone.SpyGlass.entities.User;
 import com.codedifferently.groupone.SpyGlass.enums.Frequency;
 import com.codedifferently.groupone.SpyGlass.enums.Priority;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface GoalRepo extends JpaRepository<Goal, Long> {
@@ -21,4 +23,6 @@ public interface GoalRepo extends JpaRepository<Goal, Long> {
     int updateGoal(String description, Date deadLine, Frequency frequency,
                              Priority priority, double contributionAmount,
                              double goalAmount, double currentlySaved, String pictureUrl, Long id);
+
+    List<Goal> findAllByUser(User user);
 }
