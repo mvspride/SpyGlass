@@ -3,7 +3,6 @@ package com.codedifferently.groupone.SpyGlass.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyDouble;
@@ -27,10 +26,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,8 +50,9 @@ public class GoalServiceTest {
     @Autowired
     private GoalService goalService;
 
-    private User user;
     private Goal goal;
+    private User user;
+
 
     @BeforeEach
     void setUp(){
@@ -85,7 +82,7 @@ public class GoalServiceTest {
 
     @Test
     public void testGetGoals() {
-        ArrayList<Goal> goalList = new ArrayList<Goal>();
+        ArrayList<Goal> goalList = new ArrayList<>();
         when(this.goalRepo.findAll()).thenReturn(goalList);
         List<Goal> actualGoals = this.goalService.getGoals();
         assertSame(goalList, actualGoals);
@@ -96,23 +93,14 @@ public class GoalServiceTest {
     @Test
     public void testGetGoalById() throws GoalNotFoundException {
         Optional<Goal> ofResult = Optional.of(goal);
-        when(this.goalRepo.findById((Long) any())).thenReturn(ofResult);
-        when(this.goalRepo.existsById((Long) any())).thenReturn(true);
+        when(this.goalRepo.findById(any())).thenReturn(ofResult);
+        when(this.goalRepo.existsById(any())).thenReturn(true);
         Optional<Goal> actualGoalById = this.goalService.getGoalById(123L);
         assertSame(ofResult, actualGoalById);
         assertTrue(actualGoalById.isPresent());
-        verify(this.goalRepo).existsById((Long) any());
-        verify(this.goalRepo).findById((Long) any());
-        assertTrue(this.goalService.getGoals().isEmpty());
-    }
-
-    @Test
-    public void testGetGoalById2() throws GoalNotFoundException {
-        Optional<Goal> ofResult = Optional.of(goal);
-        when(this.goalRepo.findById(any())).thenReturn(ofResult);
-        when(this.goalRepo.existsById(any())).thenReturn(false);
-        assertThrows(GoalNotFoundException.class, () -> this.goalService.getGoalById(123L));
         verify(this.goalRepo).existsById(any());
+        verify(this.goalRepo).findById(any());
+        assertTrue(this.goalService.getGoals().isEmpty());
     }
 
     @Test
@@ -132,16 +120,6 @@ public class GoalServiceTest {
     }
 
     @Test
-    public void testEditGoal2() throws GoalNotFoundException {
-        when(this.goalRepo.updateGoal(anyString(), any(), any(), any(), anyDouble(),
-                anyDouble(), anyDouble(), anyString(), any())).thenReturn(1);
-        when(this.goalRepo.findById(any())).thenReturn(Optional.empty());
-
-        assertThrows(GoalNotFoundException.class, () -> this.goalService.editGoal(123L, goal));
-        verify(this.goalRepo).findById(any());
-    }
-
-    @Test
     public void testDeleteGoal() throws GoalNotFoundException {
         doNothing().when(this.goalRepo).deleteById(any());
         when(this.goalRepo.existsById(any())).thenReturn(true);
@@ -156,19 +134,10 @@ public class GoalServiceTest {
     }
 
     @Test
-    public void testDeleteGoal2() throws GoalNotFoundException {
-        doNothing().when(this.goalRepo).deleteById(any());
-        when(this.goalRepo.existsById(any())).thenReturn(false);
-        assertThrows(GoalNotFoundException.class, () -> this.goalService.deleteGoal(123L));
-        verify(this.goalRepo).existsById(any());
-    }
-
-    @Test
     public void testAddContribution() {
         when(this.goalRepo.updateGoal(anyString(), any(), any(), any(), anyDouble(),
                 anyDouble(), anyDouble(), anyString(), any())).thenReturn(1);
         when(this.goalRepo.getById(any())).thenReturn(goal);
-
 
         Contribution contribution = new Contribution();
         contribution.setAmount(10.0);
@@ -177,39 +146,16 @@ public class GoalServiceTest {
         contribution.setContributionDate(Date.from(atStartOfDayResult2.atZone(ZoneId.systemDefault()).toInstant()));
         when(this.contributionRepository.save(any())).thenReturn(contribution);
 
-        User user2 = new User();
-        user2.setEmail("jane.doe@example.org");
-        user2.setPassword("iloveyou");
-        user2.setUsername("janedoe");
-        user2.setEnabled(true);
-        user2.setLocked(true);
-        user2.setUserRole(UserRole.USER);
-
-        Goal goal2 = new Goal();
-        goal2.setContributions(new ArrayList<>());
-        goal2.setUser(user2);
-        LocalDateTime atStartOfDayResult3 = LocalDate.of(1970, 1, 1).atStartOfDay();
-        goal2.setDeadLine(Date.from(atStartOfDayResult3.atZone(ZoneId.systemDefault()).toInstant()));
-        goal2.setCurrentlySaved(10.0);
-        goal2.setFrequency(Frequency.DAILY);
-        goal2.setId(123L);
-        goal2.setTimeStamp(mock(Timestamp.class));
-        goal2.setPictureURL("https://example.org/example");
-        goal2.setDescription("The characteristics of someone or something");
-        goal2.setGoalAmount(10.0);
-        goal2.setContributionAmount(10.0);
-        goal2.setPriority(Priority.LOW);
-
         Contribution contribution1 = new Contribution();
         contribution1.setAmount(10.0);
-        contribution1.setGoal(goal2);
+        contribution1.setGoal(goal);
         LocalDateTime atStartOfDayResult4 = LocalDate.of(1970, 1, 1).atStartOfDay();
         contribution1.setContributionDate(Date.from(atStartOfDayResult4.atZone(ZoneId.systemDefault()).toInstant()));
         ResponseEntity actualAddContributionResult = this.goalService.addContribution(123L, contribution1);
         assertTrue(actualAddContributionResult.hasBody());
         assertTrue(actualAddContributionResult.getHeaders().isEmpty());
         assertEquals(HttpStatus.OK, actualAddContributionResult.getStatusCode());
-        Goal goal3 = ((Contribution) actualAddContributionResult.getBody()).getGoal();
+        Goal goal3 = ((Contribution) Objects.requireNonNull(actualAddContributionResult.getBody())).getGoal();
         assertSame(goal, goal3);
         assertEquals(1, goal3.getContributions().size());
         verify(this.goalRepo).getById(any());

@@ -48,6 +48,7 @@ public class UserGoalServiceTest {
     private User user;
     private User user1;
     private User user2;
+    private User user3;
     private Goal goal;
     private Goal goal1;
 
@@ -74,7 +75,7 @@ public class UserGoalServiceTest {
         user2.setEnabled(true);
         user2.setLocked(true);
         user2.setUserRole(UserRole.USER);
-        User user3 = new User();
+        user3 = new User();
         user3.setEmail("jane.doe@example.org");
         user3.setPassword("iloveyou");
         user3.setUsername("janedoe");

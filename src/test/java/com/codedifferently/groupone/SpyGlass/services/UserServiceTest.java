@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,17 +47,30 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    private User user;
+    private User user1;
 
-    @Test
-    public void testLoadUserByUsername() throws UsernameNotFoundException {
-        User user = new User();
+    @BeforeEach
+    void setUp() {
+        user = new User();
         user.setEmail("jane.doe@example.org");
         user.setPassword("iloveyou");
         user.setUsername("janedoe");
         user.setEnabled(true);
         user.setLocked(true);
         user.setUserRole(UserRole.USER);
-        Optional<User> ofResult = Optional.<User>of(user);
+        user1 = new User();
+        user1.setEmail("jane.doe@example.org");
+        user1.setPassword("iloveyou");
+        user1.setUsername("janedoe");
+        user1.setEnabled(true);
+        user1.setLocked(true);
+        user1.setUserRole(UserRole.USER);
+    }
+
+    @Test
+    public void testLoadUserByUsername() throws UsernameNotFoundException {
+        Optional<User> ofResult = Optional.of(user);
         when(this.userRepository.findByEmail(anyString())).thenReturn(ofResult);
         assertSame(user, this.userService.loadUserByUsername("jane.doe@example.org"));
         verify(this.userRepository).findByEmail(anyString());
@@ -72,49 +86,20 @@ public class UserServiceTest {
 
     @Test
     public void testSignUpUser() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setUserRole(UserRole.USER);
         Optional<User> ofResult = Optional.of(user);
         when(this.userRepository.findByEmail(anyString())).thenReturn(ofResult);
-
-        User user1 = new User();
-        user1.setEmail("jane.doe@example.org");
-        user1.setPassword("iloveyou");
-        user1.setUsername("janedoe");
-        user1.setEnabled(true);
-        user1.setLocked(true);
-        user1.setUserRole(UserRole.USER);
         assertThrows(IllegalStateException.class, () -> this.userService.signUpUser(user1));
         verify(this.userRepository).findByEmail(anyString());
     }
 
     @Test
     public void testSignUpUser2() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setUserRole(UserRole.USER);
         when(this.userRepository.save(any())).thenReturn(user);
         when(this.userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         doNothing().when(this.confirmationTokenService)
                 .saveConfirmationToken(any());
         when(this.bCryptPasswordEncoder.encode(any())).thenReturn("foo");
 
-        User user1 = new User();
-        user1.setEmail("jane.doe@example.org");
-        user1.setPassword("iloveyou");
-        user1.setUsername("janedoe");
-        user1.setEnabled(true);
-        user1.setLocked(true);
-        user1.setUserRole(UserRole.USER);
         this.userService.signUpUser(user1);
         verify(this.userRepository).findByEmail(anyString());
         verify(this.userRepository).save(any());
@@ -130,13 +115,6 @@ public class UserServiceTest {
         doNothing().when(this.confirmationTokenService)
                 .saveConfirmationToken(any());
 
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setUserRole(UserRole.USER);
         this.userService.generateToken(user);
         verify(this.confirmationTokenService)
                 .saveConfirmationToken(any());
@@ -145,7 +123,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetAllUsers() {
-        ArrayList<User> userList = new ArrayList<User>();
+        ArrayList<User> userList = new ArrayList<>();
         when(this.userRepository.findAll()).thenReturn(userList);
         List<User> actualAllUsers = this.userService.getAllUsers();
         assertSame(userList, actualAllUsers);
@@ -155,13 +133,6 @@ public class UserServiceTest {
 
     @Test
     public void testGetUserById() throws UserNotFoundException {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setUserRole(UserRole.USER);
         Optional<User> ofResult = Optional.of(user);
         when(this.userRepository.findById(any())).thenReturn(ofResult);
         when(this.userRepository.existsById(any())).thenReturn(true);

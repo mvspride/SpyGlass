@@ -115,8 +115,6 @@ public class GoalControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
     }
 
-
-
     @Test
     public void testAddContribution() throws Exception {
         when(this.goalService.addContribution(any(), any()))

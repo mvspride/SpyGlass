@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.codedifferently.groupone.SpyGlass.email.EmailSender;
-import com.codedifferently.groupone.SpyGlass.entities.Goal;
 import com.codedifferently.groupone.SpyGlass.entities.User;
 import com.codedifferently.groupone.SpyGlass.enums.UserRole;
 import com.codedifferently.groupone.SpyGlass.registration.RegistrationRequest;
@@ -27,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {EmailValidator.class, RegistrationService.class, ConfirmationTokenService.class,
@@ -47,16 +47,37 @@ public class RegistrationServiceTest {
     @MockBean
     private UserService userService;
 
+    private RegistrationRequest registrationRequest;
+    private ConfirmationToken confirmationToken;
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        registrationRequest = new RegistrationRequest();
+        registrationRequest.setPassword("iloveyou");
+        registrationRequest.setEmail("jane.doe@example.org");
+        registrationRequest.setUsername("janedoe");
+        user = new User();
+        user.setEmail("jane.doe@example.org");
+        user.setPassword("iloveyou");
+        user.setUsername("janedoe");
+        user.setEnabled(true);
+        user.setLocked(true);
+        user.setUserRole(UserRole.USER);
+        confirmationToken = new ConfirmationToken();
+        confirmationToken.setUser(user);
+        confirmationToken.setToken("ABC123");
+        confirmationToken.setConfirmationTime(LocalDateTime.of(1, 1, 1, 1, 1));
+        confirmationToken.setExpirationTime(LocalDateTime.of(1, 1, 1, 1, 1));
+        confirmationToken.setCreationTime(LocalDateTime.of(1, 1, 1, 1, 1));
+    }
+
     @Test
     public void testRegister() {
         when(this.userService.signUpUser(any())).thenReturn("foo");
         when(this.emailValidator.test(anyString())).thenReturn(true);
         doNothing().when(this.emailSender).send(anyString(), anyString());
 
-        RegistrationRequest registrationRequest = new RegistrationRequest();
-        registrationRequest.setPassword("iloveyou");
-        registrationRequest.setEmail("jane.doe@example.org");
-        registrationRequest.setUsername("janedoe");
         assertEquals("foo", this.registrationService.register(registrationRequest));
         verify(this.userService).signUpUser(any());
         verify(this.emailValidator).test(anyString());
@@ -69,30 +90,12 @@ public class RegistrationServiceTest {
         when(this.emailValidator.test(anyString())).thenReturn(false);
         doNothing().when(this.emailSender).send(anyString(), anyString());
 
-        RegistrationRequest registrationRequest = new RegistrationRequest();
-        registrationRequest.setPassword("iloveyou");
-        registrationRequest.setEmail("jane.doe@example.org");
-        registrationRequest.setUsername("janedoe");
         assertThrows(IllegalStateException.class, () -> this.registrationService.register(registrationRequest));
         verify(this.emailValidator).test(anyString());
     }
 
     @Test
     public void testConfirmToken() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setUserRole(UserRole.USER);
-
-        ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setUser(user);
-        confirmationToken.setToken("ABC123");
-        confirmationToken.setConfirmationTime(LocalDateTime.of(1, 1, 1, 1, 1));
-        confirmationToken.setExpirationTime(LocalDateTime.of(1, 1, 1, 1, 1));
-        confirmationToken.setCreationTime(LocalDateTime.of(1, 1, 1, 1, 1));
         Optional<ConfirmationToken> ofResult = Optional.of(confirmationToken);
         when(this.confirmationTokenService.getToken(anyString())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class, () -> this.registrationService.confirmToken("ABC123"));
@@ -101,20 +104,6 @@ public class RegistrationServiceTest {
 
     @Test
     public void testConfirmToken2() {
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-        user.setEnabled(true);
-        user.setLocked(true);
-        user.setUserRole(UserRole.USER);
-
-        ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setUser(user);
-        confirmationToken.setToken("ABC123");
-        confirmationToken.setConfirmationTime(null);
-        confirmationToken.setExpirationTime(LocalDateTime.of(1, 1, 1, 1, 1));
-        confirmationToken.setCreationTime(LocalDateTime.of(1, 1, 1, 1, 1));
         Optional<ConfirmationToken> ofResult = Optional.of(confirmationToken);
         when(this.confirmationTokenService.getToken(anyString())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class, () -> this.registrationService.confirmToken("ABC123"));
