@@ -12,7 +12,7 @@ import Poppers from "@material-ui/core/Popper";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import Notifications from "@material-ui/icons/Notifications";
-import Dashboard from "@material-ui/icons/Dashboard";
+import Goals from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -62,7 +62,7 @@ export default function RTLNavbarLinks() {
         aria-label="Dashboard"
         className={classes.buttonLink}
       >
-        <Dashboard className={classes.icons} />
+        <Goals className={classes.icons} />
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>آمارها</p>
         </Hidden>

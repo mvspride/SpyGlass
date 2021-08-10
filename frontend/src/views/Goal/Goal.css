@@ -1,0 +1,60 @@
+
+.Dashboard{
+    text-align: right;
+}
+.cardCategory{
+    margin-top: 0px;
+}
+.goalName{
+    color: black;
+    text-align: left;
+    font-size:large;  
+
+}
+.goalAmount{
+    color: black;
+    text-align: left; 
+}
+img{
+    width: 600px;
+}
+.goalPriority{
+    text-align: left;
+    color: black;
+    font-size:large;  
+}
+.goalImage{
+    width: 400px;
+}
+
+.goalFrequency{
+    color: black;
+    text-align: right;
+    margin-top: -30px;
+    font-size:large;  
+}
+
+
+.stats{
+    color: black;
+    text-align: center;
+    font-size:large;  
+
+}
+.goalDeadline{
+    text-align: left;
+    color: black;
+    font-size:large; 
+    margin-top: 20px ; 
+}
+.goalContribution{
+    text-align: left;
+    color: black;
+    font-size:large;  
+}
+.goalDescription{
+    text-align: left;
+    color: black;
+    font-size:large;
+    margin-left: 15px;
+}
