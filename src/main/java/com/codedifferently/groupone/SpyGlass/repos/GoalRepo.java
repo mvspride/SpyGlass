@@ -13,12 +13,12 @@ import java.util.Date;
 
 @Repository
 public interface GoalRepo extends JpaRepository<Goal, Long> {
-//    @Transactional
-//    @Modifying
-//    @Query("UPDATE GOAL goal SET goal.description = ?1 WHERE goal.deadLine = ?2 WHERE goal.frequency = ?3 " +
-//            "WHERE goal.priority = ?4 WHERE goal.contributionAmount = ?5 WHERE goal.goalAmount = ?6 WHERE goal.currentlySaved = ?7" +
-//            "WHERE goal.pictureUrl = ?8")
-//    int updateGoal(String description, Date deadLine, Frequency frequency,
-//                             Priority priority, double contributionAmount,
-//                             double goalAmount,double currentlySaved, String pictureUrl);
+    @Transactional
+    @Modifying
+    @Query("UPDATE Goal g SET g.description = ?1, g.deadLine = ?2, g.frequency = ?3," +
+            " g.priority = ?4, g.contributionAmount = ?5, g.goalAmount = ?6, g.currentlySaved = ?7," +
+            " g.pictureURL = ?8 WHERE g.id = ?9")
+    int updateGoal(String description, Date deadLine, Frequency frequency,
+                             Priority priority, double contributionAmount,
+                             double goalAmount, double currentlySaved, String pictureUrl, Long id);
 }
