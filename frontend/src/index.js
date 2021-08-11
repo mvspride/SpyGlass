@@ -23,6 +23,7 @@ import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
 import AddGoal from "views/AddGoal.js";
+//import ViewGoal from "views/ViewGoal.js";
 
 import "assets/css/material-dashboard-react.css?v=1.10.0";
 
@@ -32,6 +33,7 @@ ReactDOM.render(
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
       <Route path="/addGoal" component={AddGoal}/>
+      {/* <Route path="/viewGoal" component={ViewGoal}/>  */}
       <Redirect from="/" to="/admin/login" />
       
     </Switch>

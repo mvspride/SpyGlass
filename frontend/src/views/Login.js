@@ -1,6 +1,7 @@
 //import { Redirect } from "react-router-dom";
 import React, { Component } from 'react';
 import {Form, FormGroup, Button} from 'reactstrap';
+import propTypes from 'prop-types';
 
 class Login extends Component {
     emptyUser = {
@@ -68,6 +69,7 @@ class Login extends Component {
         const body = await response.json();
         console.log(body.accessToken);
         localStorage.setItem('token', body.accessToken);
+        this.props.history.push("/admin/dashboard")
     }
 
     handleChange(event){
@@ -124,6 +126,9 @@ class Login extends Component {
             </Form>
         );
     }
+}
+Login.propTypes = {
+    history: propTypes.node
 }
  
 export default Login;
