@@ -53,7 +53,7 @@ class Goal extends Component{
                 </div>
               </CardHeader>
                 <div className ="goalDescription">
-                    Discription : {this.props.description}
+                    Description : {this.props.description}
                 </div>
               <CardFooter stats>
                 <div style={{"textAlign":"center"}} className="stats">

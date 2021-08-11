@@ -17,7 +17,9 @@ public class GoalController {
     private GoalService goalService;
 
     //GET ALL GOALS
+
     @GetMapping
+    @CrossOrigin
     public List<Goal> getGoals() {
         return goalService.getGoalsByUser();
     }

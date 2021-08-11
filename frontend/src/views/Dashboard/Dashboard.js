@@ -32,7 +32,9 @@ import React,{Component} from "react";
 // import { bugs, website, server } from "variables/general.js";
 import './Dashboard.css';
 import Goal from '../Goal/Goal';
-import uploadIcon from '../../uploadIcon.png'
+import uploadIcon from '../../uploadIcon.png';
+//import {Button} from 'reactstrap';
+//import Moment from 'react-moment';
 
 // import {
 //   dailySalesChart,
@@ -57,39 +59,88 @@ class Dashboard extends Component{
   constructor(props){
       super(props);
       this.state ={
+        isLoading: true,
         goalArray:[]
       }
   }
-  componentDidMount(){
-    this.getGoal();
+
+  async componentDidMount(){
+    console.log("mounted");
+    const response= await fetch('http://localhost:8080/goals', 
+    {
+      headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+      mode: 'cors',
+      method: 'GET'
+    });
+    const body = await response.json();
+    this.setState({goalArray:body, isLoading:false});
   }
  
-  getGoal =()=>{
-    let data =[
-      {
-      "goalName" : "Going to Italy", 
-      "goalImage" : "https://media.worldnomads.com/Explore/europe/5-things-italy.jpg",
-      "priority" :"High",
-      "frequency" : "Monthly", 
-      "goalAmount" : "$2000",
-      "contributionAmount" : "$400",
-      "deadLine" : "soon my guy",
-      "description" : "Yessir we out"
-      }
-    ];
-    this.setState({goalArray: data});
-}
+//   getGoal =()=>{
+//     let data =[
+//       {
+//       "goalName" : "Going to Italy", 
+//       "goalImage" : "https://media.worldnomads.com/Explore/europe/5-things-italy.jpg",
+//       "priority" :"High",
+//       "frequency" : "Monthly", 
+//       "goalAmount" : "$2000",
+//       "contributionAmount" : "$400",
+//       "deadLine" : "soon my guy",
+//       "description" : "Yessir we out"
+//       }
+//     ];
+//     this.setState({goalArray: data});
+// }
   render(){
+
+    const {goalArray, isLoading} = this.state;
+
+    if(isLoading)
+      return(<div>Loading your goals! This should just take a second.</div>)
+
+    let rows = 
+            goalArray.map( goal =>
+              <Goal 
+                id={goal.id} 
+                key={goal.id} 
+                //goalName = {goal.goalName} 
+                goalImage = {goal.pictureURL} 
+                priority = {goal.priority}
+                frequency = {goal.frequency} 
+                goalAmount = {goal.goalAmount} 
+                contributionAmount = {goal.contributionAmount} 
+                deadLine = {goal.deadLine}  
+                description = {goal.description}/>
+              // <tr key={goal.id}>
+              //       <td>{goal.description}</td>
+              //       <td><Moment date={goal.date} format="MM/DD/YYYY"></Moment></td>
+              //       <td>{goal.goalAmount}</td>
+              //       <td>{goal.currentlySaved}</td>
+              //       {/* <td>
+              //           <Button size="sm" color="danger" onClick={ () => this.remove(goal.id)}>Delete</Button>
+              //           <Link to={{ pathname: "/goal", state: goal}}>
+              //               <Button size="sm" color="primary">View</Button>
+              //           </Link>
+              //       </td> */}
+                    
+              //   </tr>
+              )
+                
+                
+                
+                
       return(
     <div>
       <div style={{"textAlign":"center"}}>
         <img className= "uploadIcon" src = {uploadIcon}/>
       </div>
       {
-        this.state.goalArray.map((item)=>
-          <Goal id={item.goalId} key={item.goalId} goalName = {item.goalName} goalImage = {item.goalImage} priority = {item.priority}
-                frequency = {item.frequency} goalAmount = {item.goalAmount} contributionAmount = {item.contributionAmount} 
-                deadLine = {item.deadLine} description = {item.description}/>)
+        
+        rows
+        // this.state.goalArray.map((item)=>
+        //   <Goal id={item.goalId} key={item.goalId} goalName = {item.goalName} goalImage = {item.goalImage} priority = {item.priority}
+        //         frequency = {item.frequency} goalAmount = {item.goalAmount} contributionAmount = {item.contributionAmount} 
+        //         deadLine = {item.deadLine} description = {item.description}/>)
       }
     </div>
 

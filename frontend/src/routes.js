@@ -47,7 +47,7 @@ const dashboardRoutes = [
   },
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Current Goals",
     rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: DashboardPage,
