@@ -35,10 +35,6 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    //ADD USER
-//    @PostMapping
-//    public ResponseEntity addUser(@RequestBody User user) throws URISyntaxException {
-//        return userService.addUser(user);
-//    }
+
 
 }

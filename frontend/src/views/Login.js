@@ -92,7 +92,7 @@ class Login extends Component {
             response = this.state.registrationResponse
         return (
             <Form onSubmit={this.handleSubmit}>
-                <h3>Create a New Account</h3>
+                <h3>Sign in/Sign up</h3>
 
                 <FormGroup>
                         <label htmlFor="email">Email Address</label>

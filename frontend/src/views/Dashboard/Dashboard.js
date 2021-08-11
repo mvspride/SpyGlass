@@ -33,8 +33,8 @@ import React,{Component} from "react";
 import './Dashboard.css';
 import Goal from '../Goal/Goal';
 import uploadIcon from '../../uploadIcon.png';
-import {Link} from 'react-router-dom';
-//import {Button} from 'reactstrap';
+// import {Link} from 'react-router-dom';
+// import {Button} from 'reactstrap';
 //import Moment from 'react-moment';
 
 // import {
@@ -101,7 +101,9 @@ class Dashboard extends Component{
 
     let rows = 
             goalArray.map( goal =>
-              <Goal 
+              // <tr key={goal.id}>
+              // <td>
+                <Goal 
                 id={goal.id} 
                 key={goal.id} 
                 //goalName = {goal.goalName} 
@@ -112,10 +114,14 @@ class Dashboard extends Component{
                 contributionAmount = {goal.contributionAmount} 
                 deadLine = {goal.deadLine}  
                 description = {goal.description}
-                />,
-                <Link to={{ pathname: "/goal", state: goal}}>
-                    <Button size="sm" color="primary">View</Button>
-                </Link>
+                />
+                // </td>
+                // <td>
+                // <Link to={{ pathname: "/goal", state: goal}}>
+                //     <Button size="sm" color="primary">View</Button>
+                // </Link>
+                // </td>
+                // </tr>
                         
               // <tr key={goal.id}>
               //       <td>{goal.description}</td>

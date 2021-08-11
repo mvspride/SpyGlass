@@ -59,6 +59,6 @@ public class RegistrationService {
         confirmationTokenService.setConfirmationTime(token);
         userService.enableUser(confirmationToken.getUser().getEmail());
 
-        return "Email confirmed! log in here: http://localhost:8080/login";
+        return "Email confirmed! log in here: http://localhost:3000";
     }
 }
