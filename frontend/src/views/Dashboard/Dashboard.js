@@ -33,6 +33,7 @@ import React,{Component} from "react";
 import './Dashboard.css';
 import Goal from '../Goal/Goal';
 import uploadIcon from '../../uploadIcon.png';
+import {Link} from 'react-router-dom';
 //import {Button} from 'reactstrap';
 //import Moment from 'react-moment';
 
@@ -110,7 +111,12 @@ class Dashboard extends Component{
                 goalAmount = {goal.goalAmount} 
                 contributionAmount = {goal.contributionAmount} 
                 deadLine = {goal.deadLine}  
-                description = {goal.description}/>
+                description = {goal.description}
+                />,
+                <Link to={{ pathname: "/goal", state: goal}}>
+                    <Button size="sm" color="primary">View</Button>
+                </Link>
+                        
               // <tr key={goal.id}>
               //       <td>{goal.description}</td>
               //       <td><Moment date={goal.date} format="MM/DD/YYYY"></Moment></td>
