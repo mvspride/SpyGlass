@@ -32,9 +32,9 @@ import React,{Component} from "react";
 // import { bugs, website, server } from "variables/general.js";
 import './Dashboard.css';
 import Goal from '../Goal/Goal';
-import uploadIcon from '../../uploadIcon.png';
-// import {Link} from 'react-router-dom';
-// import {Button} from 'reactstrap';
+//import uploadIcon from '../../uploadIcon.png';
+import {Link} from 'react-router-dom';
+import {Button} from 'reactstrap';
 //import Moment from 'react-moment';
 
 // import {
@@ -144,7 +144,9 @@ class Dashboard extends Component{
       return(
     <div>
       <div style={{"textAlign":"center"}}>
-        <img className= "uploadIcon" src = {uploadIcon}/>
+        <Link to={{pathname: "/addGoal"}}>
+          <Button size="sm" color="secondary">Add a New Goal</Button>
+        </Link>
       </div>
       {
         
