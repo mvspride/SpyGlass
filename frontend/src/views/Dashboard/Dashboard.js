@@ -112,8 +112,10 @@ class Dashboard extends Component{
                 frequency = {goal.frequency} 
                 goalAmount = {goal.goalAmount} 
                 contributionAmount = {goal.contributionAmount} 
+                currentlySaved = {goal.currentlySaved}
                 deadLine = {goal.deadLine}  
                 description = {goal.description}
+                contributions = {goal.contributions}
                 />
                 // </td>
                 // <td>

@@ -7,6 +7,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import propTypes from 'prop-types';
 import Moment from 'react-moment';
+import {Link} from 'react-router-dom';
+import {Button} from 'reactstrap';
 // import { Container, Table } from 'reactstrap';
 //import goalImage from "./download.jpg";
 import './Goal.css';
@@ -33,6 +35,18 @@ class Goal extends Component{
     }
    
     render(){
+      const goal = {
+        id: this.props.id,
+        description: this.props.description,
+        deadLine: this.props.deadLine,
+        frequency: this.props.frequency,
+        priority: this.props.priority,
+        contributionAmount: this.props.contributionAmount,
+        goalAmount: this.props.goalAmount,
+        currentlySaved: this.props.currentlySaved,
+        pictureURL: this.props.pictureURL,
+        contributions: this.props.contributions
+      }
       return(
     <div>
       <GridContainer>
@@ -43,7 +57,9 @@ class Goal extends Component{
             <div className ="goalName">
                 Goal Amount - ${this.props.goalAmount}
               </div>
-
+              <div className="currentlySaved">
+                Amount Already Saved - ${this.props.currentlySaved}
+              </div>
             <div className = "images">
             <img src ={this.props.goalImage} width ="100%"/>
           </div>
@@ -55,10 +71,6 @@ class Goal extends Component{
 
                 <div className= "goalPriority">
                   Priority : {this.props.priority}
-                  <div className="goalFrequency">
-                    Frequency : {this.props.frequency}
-                    
-                    </div>
                 </div>
                 
                 <div className="goalDeadline">
@@ -75,9 +87,9 @@ class Goal extends Component{
             <CardFooter stats>
               <div style={{"textAlign":"center"}} className="stats">
                 
-                <a href="#pablo"  onClick={(e) => e.preventDefault()} >
-                       edit Goal
-                </a>
+              <Link to={{pathname: "/viewGoal", state: goal}}>
+                       <Button color="secondary">Edit Goal</Button>
+              </Link>
                 
               </div>
             </CardFooter>
@@ -97,7 +109,11 @@ Goal.propTypes = {
   frequency: propTypes.string,
   deadLine: propTypes.string,
   contributionAmount: propTypes.string,
-  description: propTypes.string
+  description: propTypes.string,
+  id: propTypes.string,
+  currentlySaved: propTypes.string,
+  pictureURL: propTypes.string,
+  contributions: propTypes.array
 };
 
   
