@@ -11,4 +11,4 @@ SpyGlass is a springboot backend and React front end full-stack application that
 - [x] Users able to see if they are progressing towards their goal through the progress bar in the front end
 
 ## Landing Page
-<img src="Screen Shot 2022-08-28 at 12.03.18 PM.png" width="750", title="hover text">
+<img src="Screen Shot 2022-08-28 at 12.03.18 PM.png" width="750" title="hover text">
